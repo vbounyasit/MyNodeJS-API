@@ -1,0 +1,17 @@
+module.exports = Object.freeze({
+    COMMENTS_MAX_DEPTH_LEVEL: 4,
+    USER_SEARCH_RESULT_MAX_COUNT: 10,
+    CONVO_CREATION_MESSAGE : 'A new conversation has been created',
+    KICK_PARTICIPANT_MESSAGE : 'has been kicked from the chat',
+    PARTICIPANT_LEFT_MESSAGE : 'has left the chat',
+    PARTICIPANT_JOINED_MESSAGE: 'has joined the chat',
+    CHAT_NAME_CHANGED_MESSAGE: 'has changed the chat name to',
+    DEFAULT_PROFILE_PICTURE : 'https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
+    CHAT_ITEM_NAME_GENERATION_PARTICIPANT_COUNT: 3,
+    GROUP_PARTICIPANTS_DISPLAY_COUNT : 5,
+    SOCKET_CHAT_NEW_MESSAGE_EVENT : 'newMessage',
+    SOCKET_CHAT_CHANGED_EVENT : 'chatChanged',
+    SOCKET_CHAT_READ_EVENT : 'chatRead',
+    STRING_DELIMITER : ', ',
+    PARTICIPANT_NAMES_ETC : ',...',
+});
