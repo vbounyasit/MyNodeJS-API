@@ -22,6 +22,9 @@ const schema = new Schema(
             type: ObjectId,
             required: true
         }
+    },
+    {
+        timestamps: true
     }
 )
 

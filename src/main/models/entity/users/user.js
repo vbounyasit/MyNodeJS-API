@@ -117,7 +117,9 @@ schema.methods.toDTO = function () {
         profileBackgroundPicture: this.profileBackgroundPicture,
         description: this.description,
         gender: this.gender,
-        age: age
+        age: age,
+        creationTimeStamp: this.createdAt.getTime(),
+        updateTimeStamp: this.updatedAt.getTime()
     }
 }
 

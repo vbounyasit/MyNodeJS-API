@@ -21,6 +21,9 @@ const schema = new Schema(
             type: Number,
             required: true
         }
+    },
+    {
+        timestamps: true
     }
 )
 
@@ -39,7 +42,8 @@ schema.methods.toDTO = function () {
     return {
         remoteId: this.remoteId,
         content: this.content,
-        creationDate: this.creationDate
+        creationTimeStamp: this.creationDate,
+        updateTimeStamp: this.updatedAt.getTime()
     }
 }
 

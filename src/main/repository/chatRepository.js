@@ -212,19 +212,22 @@ module.exports = (chatSchema) => {
         })
 
         return participantChats.map(participantData => {
-            const dto = participantData.chat.toDTO()
-            const participants = participantData.chat.participants.filter(p => p.participantId.toString() != userId).map(p => p.user.toContact())
+            const chat = participantData.chat
+            const chatDTO = chat.toDTO()
+            const participants = chat.participants.filter(p => p.participantId.toString() != userId).map(p => p.user.toContact())
             const generatedParams = generateDefaultChatParams(participants)
-            dto.name = dto.name || generatedParams.defaultName
-            dto.profilePicture = dto.profilePicture || generatedParams.defaultProfilePicture
+            chatDTO.name = chatDTO.name || generatedParams.defaultName
+            chatDTO.profilePicture = chatDTO.profilePicture || generatedParams.defaultProfilePicture
             //last active
             const lastActiveTime = Math.max.apply(Math, participants.map(p => p.lastActive))
             return {
-                chat: dto,
+                chat: chatDTO,
                 lastActive: lastActiveTime,
                 lastReadTime: participantData.lastReadTime,
-                latestChatLog: participantData.chat.latestChatLog.toPopulatedDTO(userId, dto.remoteId),
-                isGroupChat: participants.length > 1
+                latestChatLog: chat.latestChatLog.toPopulatedDTO(userId, chatDTO.remoteId),
+                isGroupChat: participants.length > 1,
+                creationTimeStamp: chat.createdAt.getTime(),
+                updateTimeStamp: chat.createdAt.getTime()
             }
         })
     }
@@ -239,9 +242,10 @@ module.exports = (chatSchema) => {
         const chatParticipant = await ChatParticipantModel.findByChatIdAndParticipantId(chatId, userId)
         if (!chatParticipant) throw new Error()
         await chatParticipant.populate('chat')
-        const chatDTO = chatParticipant.chat.toDTO()
-        const group = await chatParticipant.chat.getGroupData(userId)
-        const participantsData = await chatParticipant.chat.getDisplayedParticipantsData(userId)
+        const chat = chatParticipant.chat
+        const chatDTO = chat.toDTO()
+        const group = await chat.getGroupData(userId)
+        const participantsData = await chat.getDisplayedParticipantsData(userId)
         //auto generated name/pictures for chat
         const generatedParams = generateDefaultChatParams(participantsData.displayedParticipants.map(p => p.user))
         chatDTO.name = chatDTO.name || generatedParams.defaultName
@@ -255,7 +259,9 @@ module.exports = (chatSchema) => {
             lastReadTime: chatParticipant.lastReadTime,
             lastGroupReadTime: chatParticipant.lastGroupReadTime,
             isAdmin: chatParticipant.isAdmin,
-            participantsData: participantsData
+            participantsData: participantsData,
+            creationTimeStamp: chat.createdAt.getTime(),
+            updateTimeStamp: chat.createdAt.getTime()
         }
     }
 

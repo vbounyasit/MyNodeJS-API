@@ -25,6 +25,9 @@ const schema = new Schema(
             type: ObjectId,
             required: true
         }
+    },
+    {
+        timestamps: true
     }
 )
 
@@ -46,7 +49,8 @@ schema.methods.toDTO = function () {
     return {
         remoteId: this.remoteId,
         content: this.content,
-        creationDate: this.creationDate
+        creationTimeStamp: this.creationDate,
+        updateTimeStamp: this.updatedAt.getTime()
     }
 }
 schema.methods.toPopulatedDTO = function(userId, chatRemoteId){
@@ -58,7 +62,7 @@ schema.methods.toPopulatedDTO = function(userId, chatRemoteId){
 }
 
 schema.statics.findLatest = async function (chatId) {
-    return this.findOne({ chatId }).sort({ creationDate: -1 })
+    return this.findOne({ chatId }).sort({ creationTimeStamp: -1 })
 }
 
 schema.statics.findByRemoteIds = async function(remoteIds){
