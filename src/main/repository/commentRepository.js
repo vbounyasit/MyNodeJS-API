@@ -32,7 +32,6 @@ module.exports = (commentSchema) => {
         const newComment = new this({
             content: contentMetadata.content,
             voteCount: 0,
-            creationDate: Date.now(),
             creatorId: userId,
             postId: postId,
             groupId: groupId,
@@ -86,7 +85,7 @@ module.exports = (commentSchema) => {
     /**
      * Retrieve the list of comments for a given post and 
      * order them by creation date (desc), featuring a list of ordered replies underneath each comment
-     * - Orders the list of comments by descending creationDate
+     * - Orders the list of comments by descending createdAt
      * - Builds a directional graph where vertices are comments and edges go from a comment to its children
      * - Applies DFS algorithm to discover the graph and put comments right above their child comments
      * @param {Array[CommentModel]} comments The list of comments to order
@@ -94,8 +93,6 @@ module.exports = (commentSchema) => {
      */
     commentSchema.statics.getOrderedComments = async function (comments) {
         const result = []
-        //ordering the comments
-        comments.sort((a, b) => a.creationDate - b.creationDate)
         //building the comment graph
         const graph = new Map()
         comments.forEach(comment => {
@@ -155,8 +152,7 @@ module.exports = (commentSchema) => {
                         },
                         update: {
                             $set: {
-                                content: comment.content,
-                                editDate: Date.now()
+                                content: comment.content
                             }
                         }
                     }

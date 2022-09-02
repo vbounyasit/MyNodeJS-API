@@ -1,6 +1,5 @@
 const PostVotesModel = require('../models/entity/posts/postVote')
 const GroupModel = require('../models/entity/groups/group')
-const CommentModel = require('../models/entity/comments/comment')
 const PostMediaModel = require('../models/entity/posts/postMedia')
 const utils = require("../utils")
 
@@ -21,7 +20,6 @@ module.exports = (postSchema) => {
             content: postMetadata.content,
             votesCount: 0,
             commentsCount: 0,
-            creationDate: Date.now(),
             creatorId: userId,
             groupId: groupId
         })
@@ -43,7 +41,7 @@ module.exports = (postSchema) => {
         }
     }
 
-    //TODO pagination + get posts indexed by creationDate desc
+    //TODO pagination + get posts indexed by createdAt desc
     /**
      * Retrieves the post list from a group
      * @param {ObjectId} userId The id of the user getting the post list
@@ -55,7 +53,6 @@ module.exports = (postSchema) => {
         if (!participant) throw new Error()
         await participant.save()
         const posts = await this.findByGroupId(groupId)
-        posts.sort((a, b) => b.creationDate - a.creationDate)
         await this.populate(posts, [
             'creator',
             'medias',
@@ -111,8 +108,7 @@ module.exports = (postSchema) => {
                         update: {
                             $set: {
                                 content: post.content,
-                                medias: post.medias,
-                                editDate: Date.now()
+                                medias: post.medias
                             }
                         }
                     }

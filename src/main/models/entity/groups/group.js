@@ -18,6 +18,9 @@ const schema = new Schema(
             required: true,
             unique: true
         }
+    },
+    {
+        timestamps: true
     }
 )
 schema.index({remoteId: 1, chatId: 1}, { unique: true })

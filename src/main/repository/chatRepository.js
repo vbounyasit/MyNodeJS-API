@@ -178,7 +178,7 @@ module.exports = (chatSchema) => {
         )
         await Promise.all(
             Object.keys(emitions).map(async (chatId) => {
-                await this.emitMessage(io, null, chatId, constants.SOCKET_CHAT_CHANGED_EVENT, { remoteIds: emitions[chatId] })
+                await this.constructor.emitMessage(io, null, chatId, constants.SOCKET_CHAT_CHANGED_EVENT, { remoteIds: emitions[chatId] })
             })
         )
     }

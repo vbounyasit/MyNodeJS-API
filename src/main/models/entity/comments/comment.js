@@ -31,11 +31,6 @@ const schema = new Schema(
             type: Boolean,
             required: true
         },
-        creationDate: {
-            type: Number,
-            required: true
-        },
-        editDate: Number,
         creatorId: {
             type: ObjectId,
             required: true
@@ -50,6 +45,9 @@ const schema = new Schema(
         },
         children: [String],
         parentRemoteId: String
+    },
+    {
+        timestamps: true
     }
 )
 
@@ -88,9 +86,9 @@ schema.methods.toDTO = function () {
         voteCount: this.voteCount,
         depthLevel: this.depthLevel,
         isLast: this.isLast,
-        creationDate: this.creationDate,
-        editDate: this.editDate,
-        parentRemoteId: this.parentRemoteId
+        parentRemoteId: this.parentRemoteId,
+        creationTimeStamp: this.createdAt.getTime(),
+        updateTimeStamp: this.updatedAt.getTime()
     }
 }
 
@@ -106,7 +104,7 @@ schema.methods.toPopulatedDTO = function (userId) {
 }
 
 schema.statics.findByGroupIdAndPostId = async function (groupId, postId) {
-    return this.find({ groupId, postId })
+    return this.find({ groupId, postId }).sort('-createdAt')
 }
 
 schema.statics.findByGroupIdAndPostIdAndId = async function (groupId, postId, _id) {
