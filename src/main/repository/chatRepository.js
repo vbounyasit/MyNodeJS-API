@@ -212,6 +212,7 @@ module.exports = (chatSchema) => {
         })
 
         return participantChats.map(participantData => {
+            console.log(participantData.chat)
             const chat = participantData.chat
             const chatDTO = chat.toDTO()
             const participants = chat.participants.filter(p => p.participantId.toString() != userId).map(p => p.user.toContact())
